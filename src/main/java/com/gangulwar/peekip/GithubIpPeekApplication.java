@@ -3,6 +3,10 @@ package com.gangulwar.peekip;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -78,15 +82,11 @@ public class GithubIpPeekApplication {
         return browserName + "\n----\n" + userAgent;
     }
 
-
     @GetMapping("/testSVGWithInfo")
-    public String generateSVG(HttpServletRequest request) {
-        // Retrieve text to display from the getBrowserName1() method
+    public ResponseEntity<byte[]> generateSVG(HttpServletRequest request) {
         String text = getBrowserName1(request);
-//        String text = "Aarsh";
-        // Generate the SVG content dynamically
 
-        return "<svg xmlns=\"http://www.w3.org/2000/svg\">\n" +
+        String svgContent = "<svg xmlns=\"http://www.w3.org/2000/svg\">\n" +
                 "    <defs>\n" +
                 "        <style>\n" +
                 "            text {\n" +
@@ -114,6 +114,11 @@ public class GithubIpPeekApplication {
                 + text +
                 "***IP: "+request.getRemoteAddr()+"***Remote Host"+request.getRemoteHost()+"***RemotePort"+request.getRemotePort()+"***Your Locale:"+request.getLocale().toString()+ "</text>\n" +
                 "</svg>";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("image/svg+xml"));
+
+        return new ResponseEntity<>(svgContent.getBytes(), headers, HttpStatus.OK);
     }
 
     @GetMapping("/getJsonInfo")
