@@ -236,10 +236,6 @@ public class GithubIpPeekApplication {
                     '}';
         }
 
-        // Getters and setters
-        // ...
-        // Constructor(s) if needed
-        // ...
     }
 
 }
