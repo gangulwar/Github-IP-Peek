@@ -20,4 +20,27 @@ public class GithubIpPeekApplication {
         String ipAddress = request.getRemoteAddr();
         return "Client IP Address: " + ipAddress;
     }
+
+    @GetMapping("/browser")
+    public String getBrowserName(HttpServletRequest request) {
+        String userAgent = request.getHeader("User-Agent");
+        String browserName = "Unknown";
+
+        if (userAgent != null) {
+            if (userAgent.contains("MSIE") || userAgent.contains("Trident")) {
+                browserName = "Internet Explorer";
+            } else if (userAgent.contains("Firefox")) {
+                browserName = "Firefox";
+            } else if (userAgent.contains("Chrome")) {
+                browserName = "Chrome";
+            } else if (userAgent.contains("Safari")) {
+                browserName = "Safari";
+            } else if (userAgent.contains("Opera")) {
+                browserName = "Opera";
+            }
+        }
+
+        System.out.println(userAgent);
+        return "Browser Name: " + browserName + "\nUser-Agent: " + userAgent;
+    }
 }
